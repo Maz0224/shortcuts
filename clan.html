@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>XR | Clan Announcer | Maz</title>
+<style>
+    body {
+        background: #101020;
+        font-family: Arial, sans-serif;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .container {
+        background: #1a1a33;
+        padding: 25px;
+        border-radius: 12px;
+        width: 350px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        text-align: center;
+    }
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #7aa7ff;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        background: #28284a;
+        color: white;
+        font-size: 14px;
+    }
+    button {
+        margin-top: 15px;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: #4a67ff;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button:hover {
+        background: #6c85ff;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>XR | Clan Announcer | Maz</h1>
+
+    <input type="text" id="codeInput" placeholder="Enter access code">
+
+    <textarea id="msg" rows="5" placeholder="Enter announcement..."></textarea>
+
+    <button onclick="sendMessage()">Send</button>
+
+    <p id="status" style="margin-top:15px; color:#7aa7ff;"></p>
+</div>
+
+<script>
+// BASE64 encoded webhook (yours)
+const encodedWebhook =
+  "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQxOTkzOTgxNjc0ODE2NjYzL0dkdzhkY2lpXzlqTmxWeHpZWEFwYjNHdUxKM1Z0WVVycmZfRmFSenloeE96eGVBNGU5OG5sTTVka2FaaHBLbTF3bnJu";
+
+const webhookURL = atob(encodedWebhook);
+const codeURL = "https://raw.githubusercontent.com/Maz0224/shortcuts/refs/heads/main/discordclananouncercode";
+
+async function sendMessage() {
+    const message = document.getElementById("msg").value.trim();
+    const codeEntered = document.getElementById("codeInput").value.trim();
+    const status = document.getElementById("status");
+
+    if (!message) {
+        status.textContent = "Please enter a message!";
+        return;
+    }
+
+    status.textContent = "Checking code...";
+
+    try {
+        const response = await fetch(codeURL);
+        const correctCode = (await response.text()).trim();
+
+        if (codeEntered !== correctCode) {
+            status.textContent = "Invalid access code.";
+            return;
+        }
+
+        status.textContent = "Sending...";
+
+        await fetch(webhookURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: message })
+        });
+
+        status.textContent = "Message sent!";
+        document.getElementById("msg").value = "";
+    } 
+    catch (err) {
+        status.textContent = "Error sending message.";
+    }
+}
+</script>
+
+</body>
+</html>
