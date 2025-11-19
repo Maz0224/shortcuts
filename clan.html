@@ -70,11 +70,10 @@
 </div>
 
 <script>
-// BASE64 encoded webhook (yours)
-const encodedWebhook =
-  "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQxOTkzOTgxNjc0ODE2NjYzL0dkdzhkY2lpXzlqTmxWeHpZWEFwYjNHdUxKM1Z0WVVycmZfRmFSenloeE96eGVBNGU5OG5sTTVka2FaaHBLbTF3bnJu";
+// YOUR WEBHOOK (plain text)
+const webhookURL = "https://discord.com/api/webhooks/1419939816744816663/Gdw8dcii_9jNlVxzYXApb3GuLJ3VtYVrrf_FaRzyhxOzxeA4e98nlM5dkaZhpKm1wnrn";
 
-const webhookURL = atob(encodedWebhook);
+// GitHub code link
 const codeURL = "https://raw.githubusercontent.com/Maz0224/shortcuts/refs/heads/main/discordclananouncercode";
 
 async function sendMessage() {
